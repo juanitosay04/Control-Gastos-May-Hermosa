@@ -4,9 +4,56 @@ import Dashboard from './components/Dashboard';
 import ExpensesTracker from './components/ExpensesTracker';
 import ProjectionsCalculator from './components/ProjectionsCalculator';
 import InvestmentsTracker from './components/InvestmentsTracker';
+import { Heart } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [showWelcomeModal, setShowWelcomeModal] = useState(true);
+  const [welcomeGreeting, setWelcomeGreeting] = useState('');
+  const [showMimoModal, setShowMimoModal] = useState(false);
+  const [currentMimoNote, setCurrentMimoNote] = useState('');
+
+  const welcomeGreetings = [
+    "¡Hola, mi hermosa profe! Que tengas un día tan espectacular como tu sonrisa. Recuerda que te amo. ❤️ - Tu Inge",
+    "Hola, mi reina. 🌸 Aquí está tu inge hermoso listo para ayudarte a cuidar de tu saloncito financiero. ¡Te ves preciosa hoy! 😘",
+    "¡Hola, mi vida! Espero que tu jornada escolar sea maravillosa. P.D: No olvides que eres la profesora más linda del mundo entero. 😍✨",
+    "¡Buenas nuevas, mi amor! Entrando al diario de la profe consentida. Hoy vas a tener un día increíble. ¡Te amo muchísimo! 💕🏫",
+    "¡Hola, hermosa! Que hoy tus estudiantes se porten de maravilla y que tu corazón se llene de alegría. Te mando un abrazo gigante. 👩‍🏫❤️",
+    "¡Mi amor! Recuerda tomarte una pausa para respirar y sonreír. Eres la docente más brillante y la novia más dulce. 🥰✨"
+  ];
+
+  const mimoNotes = [
+    "Mi amor, eres la casualidad más bonita que me ha pasado en la vida. Gracias por hacerme tan feliz. ❤️ - Tu Inge",
+    "Paso por aquí para recordarte que estoy súper orgulloso de ti. Eres una profesora increíblemente dedicada e inteligente. 👩‍🏫✨",
+    "¿Un secreto? No importa lo difícil que sea el día, saber que tengo tu amor me hace sentir el ingeniero más afortunado del universo. 🛠️❤️",
+    "Un vale por: Una cena deliciosa preparada por tu inge lindo + muchos besitos en la frente. (Válido para cobrar hoy mismo). 😉🍲",
+    "Te amo no solo por lo hermosa que eres, sino por la paz y felicidad que le das a mi vida todos los días. Eres mi lugar seguro. 🌸",
+    "Si te sientes cansadita por las clases, cierra los ojos un segundo: imagina que te estoy abrazando fuerte y te doy un besito. ¡Tú puedes, mi reina! 💕",
+    "¡Alerta de piropo! Definición de perfección: Eres tú explicando clases a tus niños con esa dedicación tan bonita. 😍👩‍🏫",
+    "P.D: Te amo más de lo que los programadores aman el café, y mira que eso es muchísimo... ☕❤️",
+    "No te olvides de comprarle alguito a tu inge hermoso con tus ahorros... o mejor, ¡vamos juntos y yo te invito todo! 😉✨",
+    "Eres el código más perfecto que el universo ha escrito. Te amo con locura. 💻❤️",
+    "Un recordatorio rápido: eres increíble, eres capaz de todo y tu inge te adora con todo el alma. ¡Que tengas un día grandioso! 🌟"
+  ];
+
+  useEffect(() => {
+    const randomGreeting = welcomeGreetings[Math.floor(Math.random() * welcomeGreetings.length)];
+    setWelcomeGreeting(randomGreeting);
+  }, []);
+
+  const handleOpenMimo = () => {
+    const randomNote = mimoNotes[Math.floor(Math.random() * mimoNotes.length)];
+    setCurrentMimoNote(randomNote);
+    setShowMimoModal(true);
+  };
+
+  const handleNewMimo = () => {
+    let randomNote = mimoNotes[Math.floor(Math.random() * mimoNotes.length)];
+    while (randomNote === currentMimoNote && mimoNotes.length > 1) {
+      randomNote = mimoNotes[Math.floor(Math.random() * mimoNotes.length)];
+    }
+    setCurrentMimoNote(randomNote);
+  };
 
   // Floating custom toast alert state
   const [activeAlert, setActiveAlert] = useState({
@@ -492,6 +539,62 @@ export default function App() {
           />
         )}
       </main>
+
+      {/* Floating Mimo del Inge heart button */}
+      <button 
+        className="floating-mimo-btn"
+        onClick={handleOpenMimo}
+        title="Un Mimo del Inge"
+      >
+        <Heart size={16} fill="#120904" />
+        <span>Mimos del Inge</span>
+      </button>
+
+      {/* Romantic Welcome Modal */}
+      {showWelcomeModal && welcomeGreeting && (
+        <div className="romantic-modal-overlay">
+          <div className="romantic-modal-card">
+            <div className="romantic-modal-heart">❤️</div>
+            <h3>¡Hola, mi hermosa profe!</h3>
+            <p className="romantic-modal-greeting">{welcomeGreeting}</p>
+            <button 
+              className="btn btn-primary" 
+              onClick={() => setShowWelcomeModal(false)}
+              style={{ width: '100%', marginTop: '1.25rem' }}
+            >
+              Empezar mi día con amor 🥰
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Mimo Modal (Notebook page) */}
+      {showMimoModal && (
+        <div className="romantic-modal-overlay" onClick={() => setShowMimoModal(false)}>
+          <div className="romantic-mimo-card" onClick={(e) => e.stopPropagation()}>
+            <div className="romantic-mimo-notebook-header">
+              <span className="notebook-spiral">✏️</span>
+              <span className="notebook-title">Mimos de tu Inge Hermoso</span>
+              <button className="notebook-close" onClick={() => setShowMimoModal(false)}>×</button>
+            </div>
+            <div className="romantic-mimo-notebook-body">
+              <p className="romantic-mimo-text">{currentMimoNote}</p>
+              <div className="romantic-mimo-signature">
+                Te ama con todo el corazón,<br />
+                <strong>Tu Inge Hermoso 🛠️❤️</strong>
+              </div>
+            </div>
+            <button 
+              type="button"
+              className="btn btn-secondary" 
+              onClick={handleNewMimo}
+              style={{ width: '100%', marginTop: '1.25rem', borderColor: '#e07a5f', color: '#c95d3b' }}
+            >
+              Leer otro mimo ✨
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

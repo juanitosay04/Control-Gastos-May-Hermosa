@@ -12,7 +12,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
-        <Heart className="text-cyan" size={22} fill="var(--accent-cyan)" />
+        <Heart className="text-cyan pulse-heart" size={22} fill="var(--accent-cyan)" />
         <span className="sidebar-logo-text">MayWealth</span>
       </div>
       

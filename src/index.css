@@ -872,3 +872,208 @@ tr:hover td {
     height: 20px;
   }
 }
+
+/* Pulse logo animation style */
+.pulse-heart {
+  animation: pulse-animation 1.5s infinite ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes pulse-animation {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+/* Floating romantic heart button */
+.floating-mimo-btn {
+  position: fixed;
+  bottom: 85px;
+  right: 20px;
+  background: linear-gradient(135deg, var(--accent-rose) 0%, #d85c43 100%);
+  color: #120904 !important;
+  border: none;
+  border-radius: 50px;
+  padding: 0.55rem 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 750;
+  font-size: 0.75rem;
+  box-shadow: 0 4px 15px rgba(231, 111, 81, 0.4);
+  cursor: pointer;
+  z-index: 1500;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.floating-mimo-btn:hover {
+  transform: scale(1.06) translateY(-2px);
+  box-shadow: 0 8px 25px rgba(231, 111, 81, 0.6);
+}
+
+.floating-mimo-btn svg {
+  color: #120904;
+}
+
+/* Romantic Custom Modals styling */
+.romantic-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(13, 6, 3, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  padding: 1.5rem;
+  animation: fadeIn 0.35s ease forwards;
+}
+
+.romantic-modal-card {
+  background: linear-gradient(135deg, #251208 0%, #150a04 100%);
+  border: 2px solid var(--accent-rose);
+  border-radius: 24px;
+  padding: 2.25rem 2rem;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(231, 111, 81, 0.38);
+  position: relative;
+  animation: zoomInUp 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.romantic-modal-heart {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+  animation: heartBeat 1.4s infinite ease-in-out;
+}
+
+.romantic-modal-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.75rem;
+  color: var(--accent-rose);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.romantic-modal-greeting {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Notebook mimo card */
+.romantic-mimo-card {
+  background: #fffdf0; /* Cream paper page */
+  border-radius: 18px;
+  padding: 1.75rem 2rem;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(244, 162, 97, 0.08);
+  position: relative;
+  border-left: 18px solid #e07a5f; /* Spiral margin color */
+  animation: zoomInUp 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.romantic-mimo-notebook-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px dashed rgba(224, 122, 95, 0.25);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.notebook-spiral {
+  font-size: 1.2rem;
+}
+
+.notebook-title {
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #c95d3b;
+}
+
+.notebook-close {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: #e07a5f;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  font-weight: 300;
+}
+
+.romantic-mimo-notebook-body {
+  font-family: 'Georgia', serif;
+  background-image: linear-gradient(rgba(224, 122, 95, 0.08) 1px, transparent 1px);
+  background-size: 100% 2.2rem;
+  line-height: 2.2rem;
+  padding: 0.5rem 0.25rem 0.5rem 0.75rem;
+  color: #2b170c;
+  min-height: 150px;
+  position: relative;
+}
+
+.romantic-mimo-text {
+  font-size: 1.02rem;
+  font-weight: 500;
+  color: #3d2112;
+  margin-bottom: 1.25rem;
+  text-align: left;
+  line-height: 1.65;
+}
+
+.romantic-mimo-signature {
+  font-size: 0.85rem;
+  text-align: right;
+  margin-top: 1.25rem;
+  color: #c95d3b;
+  line-height: 1.4;
+}
+
+@media (min-width: 993px) {
+  .floating-mimo-btn {
+    bottom: 25px;
+    right: 25px;
+    padding: 0.65rem 1.15rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Animations */
+@keyframes heartBeat {
+  0% { transform: scale(1); }
+  14% { transform: scale(1.15); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.15); }
+  70% { transform: scale(1); }
+}
+
+@keyframes zoomInUp {
+  from {
+    opacity: 0;
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  60% {
+    opacity: 1;
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1) translate3d(0, 0, 0);
+  }
+}
