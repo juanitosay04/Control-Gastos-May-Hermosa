@@ -39,6 +39,22 @@ export default function App() {
   useEffect(() => {
     const randomGreeting = welcomeGreetings[Math.floor(Math.random() * welcomeGreetings.length)];
     setWelcomeGreeting(randomGreeting);
+
+    // Fetch from Vercel KV Cloud database on mount
+    const loadFromCloud = async () => {
+      try {
+        const res = await fetch('/api/finances');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && !data.warning && (data.incomes || data.expenses || data.investments)) {
+            setFinancialData(data);
+          }
+        }
+      } catch (e) {
+        console.warn("Could not load from Vercel KV cloud", e);
+      }
+    };
+    loadFromCloud();
   }, []);
 
   const handleOpenMimo = () => {
@@ -108,6 +124,20 @@ export default function App() {
 
   useEffect(() => {
     localStorage.setItem(localStorageKey, JSON.stringify(financialData));
+
+    // Asynchronously push updates to Vercel KV database
+    const saveToCloud = async () => {
+      try {
+        await fetch('/api/finances', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(financialData)
+        });
+      } catch (e) {
+        console.warn("Could not save to Vercel KV cloud", e);
+      }
+    };
+    saveToCloud();
   }, [financialData]);
 
   // Trigger global toast alert helper
