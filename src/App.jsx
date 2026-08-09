@@ -119,17 +119,13 @@ export default function App() {
       date: newIncome.date
     };
 
-    setFinancialData((prev) => {
-      const updatedIncomes = [incomeWithId, ...prev.incomes];
-      
-      triggerToastAlert(getIncomeMessage(), 'income');
+    setFinancialData((prev) => ({
+      ...prev,
+      incomes: [incomeWithId, ...prev.incomes],
+      transactions: [transaction, ...prev.transactions]
+    }));
 
-      return {
-        ...prev,
-        incomes: updatedIncomes,
-        transactions: [transaction, ...prev.transactions]
-      };
-    });
+    triggerToastAlert(getIncomeMessage(), 'income');
   };
 
   const handleDeleteIncome = (id) => {
@@ -194,18 +190,15 @@ export default function App() {
       date: newExpense.date
     };
 
-    setFinancialData((prev) => {
-      const updatedExpenses = [expenseWithId, ...prev.expenses];
-      const newTotal = updatedExpenses.reduce((sum, exp) => sum + exp.amount, 0);
-      
-      triggerToastAlert(getExpenseMessage(newTotal), 'expense');
+    setFinancialData((prev) => ({
+      ...prev,
+      expenses: [expenseWithId, ...prev.expenses],
+      transactions: [transaction, ...prev.transactions]
+    }));
 
-      return {
-        ...prev,
-        expenses: updatedExpenses,
-        transactions: [transaction, ...prev.transactions]
-      };
-    });
+    const currentTotal = financialData.expenses.reduce((sum, exp) => sum + exp.amount, 0);
+    const newTotal = currentTotal + newExpense.amount;
+    triggerToastAlert(getExpenseMessage(newTotal), 'expense');
   };
 
   const handleDeleteExpense = (id) => {
@@ -246,12 +239,11 @@ export default function App() {
   };
 
   // Handlers for Obligations
-  const handleToggleObligation = (id) => {
-    setFinancialData((prev) => {
-      const obligation = prev.obligations.find((ob) => ob.id === id);
-      if (!obligation) return prev;
+  const handleToggleObligation = (id, isMarkingPaid) => {
+    const obligation = financialData.obligations.find(ob => ob.id === id);
+    if (!obligation) return;
 
-      const isMarkingPaid = !obligation.paid;
+    setFinancialData((prev) => {
       const updatedObligations = prev.obligations.map((ob) => {
         if (ob.id === id) {
           return { ...ob, paid: isMarkingPaid };
@@ -280,10 +272,6 @@ export default function App() {
         };
         updatedExpenses = [newExpense, ...updatedExpenses];
         updatedTransactions = [newTransaction, ...updatedTransactions];
-
-        // Trigger expense alert message
-        const newTotal = updatedExpenses.reduce((sum, exp) => sum + exp.amount, 0);
-        triggerToastAlert(getExpenseMessage(newTotal), 'expense');
       } else {
         updatedExpenses = updatedExpenses.filter(
           (exp) => !(exp.description === obligation.description && exp.amount === obligation.amount)
@@ -300,6 +288,12 @@ export default function App() {
         transactions: updatedTransactions
       };
     });
+
+    if (isMarkingPaid) {
+      const currentTotal = financialData.expenses.reduce((sum, exp) => sum + exp.amount, 0);
+      const newTotal = currentTotal + obligation.amount;
+      triggerToastAlert(getExpenseMessage(newTotal), 'expense');
+    }
   };
 
   const handleAddObligation = (newObl) => {
@@ -359,14 +353,7 @@ export default function App() {
           date: newTransaction.date
         };
         updatedExpenses = [newExpense, ...prev.expenses];
-        
-        // Trigger alert
-        const newTotal = updatedExpenses.reduce((sum, exp) => sum + exp.amount, 0);
-        triggerToastAlert(getExpenseMessage(newTotal), 'expense');
       } else if (mock.type === 'income') {
-        // Trigger income alert
-        triggerToastAlert(getIncomeMessage(), 'income');
-
         const newIncome = {
           id: newId + 2,
           description: mock.desc,
@@ -388,6 +375,15 @@ export default function App() {
         transactions: updatedTransactions
       };
     });
+
+    // Trigger alerts OUTSIDE of the setState callback
+    if (mock.type === 'expense') {
+      const currentTotal = financialData.expenses.reduce((sum, exp) => sum + exp.amount, 0);
+      const newTotal = currentTotal + mock.amount;
+      triggerToastAlert(getExpenseMessage(newTotal), 'expense');
+    } else if (mock.type === 'income') {
+      triggerToastAlert(getIncomeMessage(), 'income');
+    }
   };
 
   const handleExportData = () => {
