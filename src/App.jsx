@@ -47,7 +47,16 @@ export default function App() {
         if (res.ok) {
           const data = await res.json();
           if (data && !data.warning && (data.incomes || data.expenses || data.investments)) {
-            setFinancialData(data);
+            const localSaved = localStorage.getItem(localStorageKey);
+            const localObj = localSaved ? JSON.parse(localSaved) : null;
+            const localTime = localObj?.updatedAt || 0;
+            const cloudTime = data.updatedAt || 0;
+
+            // Only update local state if the cloud state is strictly newer
+            if (cloudTime > localTime) {
+              setRawFinancialData(data);
+              localStorage.setItem(localStorageKey, JSON.stringify(data));
+            }
           }
         }
       } catch (e) {
@@ -81,7 +90,7 @@ export default function App() {
   const localStorageKey = 'finances_may_data';
 
   // Initial State tailored for May (Teacher & Autumn Theme)
-  const [financialData, setFinancialData] = useState(() => {
+  const [financialData, setRawFinancialData] = useState(() => {
     const saved = localStorage.getItem(localStorageKey);
     if (saved) {
       try {
@@ -118,9 +127,21 @@ export default function App() {
         { id: 2, description: 'Plan de Celular Claro', amount: 75000, category: 'Servicios', type: 'Gasto Fijo', dueDate: 'Día 07', paid: true },
         { id: 3, description: 'Cuota Crédito Educativo ICETEX', amount: 250000, category: 'Créditos', type: 'Crédito Educativo', dueDate: 'Día 15', paid: false },
         { id: 4, description: 'Servicios Públicos (Luz/Internet)', amount: 280000, category: 'Servicios', type: 'Gasto Fijo', dueDate: 'Día 20', paid: false }
-      ]
+      ],
+      updatedAt: 1
     };
   });
+
+  const setFinancialData = (updater) => {
+    setRawFinancialData((prev) => {
+      const next = typeof updater === 'function' ? updater(prev) : updater;
+      if (!next) return prev;
+      return {
+        ...next,
+        updatedAt: Date.now()
+      };
+    });
+  };
 
   useEffect(() => {
     localStorage.setItem(localStorageKey, JSON.stringify(financialData));
