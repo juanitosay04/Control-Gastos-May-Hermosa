@@ -95,7 +95,7 @@ export default function Dashboard({
         {/* Net Worth */}
         <div className="glass-card metric-card cyan">
           <div className="metric-header">
-            <span className="metric-title">Presupuesto Nivelado</span>
+            <span className="metric-title">Patrimonio Neto (Ahorros)</span>
             <div className="metric-icon-wrapper">
               <Heart size={20} className="text-cyan" fill="var(--accent-cyan)" />
             </div>
