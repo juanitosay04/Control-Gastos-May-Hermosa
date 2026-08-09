@@ -105,6 +105,7 @@ export default function ProjectionsCalculator() {
             />
             <input 
               type="text" 
+              inputMode="numeric"
               value={formatNumberInput(initialAmount)} 
               onChange={(e) => setInitialAmount(parseNumberInput(e.target.value))}
               style={{ marginTop: '-5px' }}
@@ -126,6 +127,7 @@ export default function ProjectionsCalculator() {
             />
             <input 
               type="text" 
+              inputMode="numeric"
               value={formatNumberInput(monthlyContribution)} 
               onChange={(e) => setMonthlyContribution(parseNumberInput(e.target.value))}
               style={{ marginTop: '-5px' }}
@@ -225,6 +227,7 @@ export default function ProjectionsCalculator() {
             <label>Meta de Ahorro Objetivo</label>
             <input 
               type="text" 
+              inputMode="numeric"
               value={formatNumberInput(targetGoal)} 
               onChange={(e) => setTargetGoal(parseNumberInput(e.target.value))}
               placeholder="Ej. 150.000.000"

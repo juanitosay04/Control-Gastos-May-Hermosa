@@ -177,6 +177,7 @@ export default function InvestmentsTracker({ investments, onAddInvestment, onDel
                 <label>Costo Unitario ($ COP)</label>
                 <input 
                   type="text" 
+                  inputMode="numeric"
                   value={avgCost} 
                   onChange={(e) => handleFormatInput(e.target.value, setAvgCost)} 
                   placeholder="Monto Ahorrado" 
@@ -188,6 +189,7 @@ export default function InvestmentsTracker({ investments, onAddInvestment, onDel
                 <label>Precio Actual ($ COP)</label>
                 <input 
                   type="text" 
+                  inputMode="numeric"
                   value={currentPrice} 
                   onChange={(e) => handleFormatInput(e.target.value, setCurrentPrice)} 
                   placeholder="Valoración en el Mercado" 

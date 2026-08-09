@@ -257,6 +257,7 @@ export default function ExpensesTracker({
               <label style={{ fontSize: '0.75rem' }}>Monto ($ COP)</label>
               <input 
                 type="text" 
+                inputMode="numeric"
                 placeholder="Monto" 
                 value={newOblAmount} 
                 onChange={(e) => handleFormatInput(e.target.value, setNewOblAmount)}
@@ -336,6 +337,7 @@ export default function ExpensesTracker({
                   <label>Monto ($ COP)</label>
                   <input 
                     type="text" 
+                    inputMode="numeric"
                     value={amount}
                     onChange={(e) => handleFormatInput(e.target.value, setAmount)}
                     placeholder="Monto" 
