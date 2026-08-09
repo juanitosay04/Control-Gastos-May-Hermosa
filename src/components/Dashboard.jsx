@@ -31,7 +31,8 @@ export default function Dashboard({
   exportData,
   onDeleteTransaction,
   clearData,
-  syncStatus = 'loading'
+  syncStatus = 'loading',
+  syncError = ''
 }) {
   const { income, expenses, transactions, investments } = financialData;
 
@@ -79,7 +80,11 @@ export default function Dashboard({
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
             <h1>Cuaderno de Tareas</h1>
             {syncStatus && (
-              <span className={`sync-badge ${syncStatus}`}>
+              <span 
+                className={`sync-badge ${syncStatus}`}
+                title={syncStatus === 'error' ? `Error Postgres: ${syncError}` : syncStatus === 'local' ? 'DATABASE_URL no configurada en Vercel' : 'Base de datos Postgres conectada correctamente'}
+                style={{ cursor: syncStatus === 'error' || syncStatus === 'local' ? 'help' : 'default' }}
+              >
                 {syncStatus === 'synced' && "● Nube Conectada"}
                 {syncStatus === 'local' && "▲ Modo Local"}
                 {syncStatus === 'error' && "✖ Error Enlace"}
