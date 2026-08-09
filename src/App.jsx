@@ -17,7 +17,9 @@ export default function App() {
 
   // Initial State tailored for May (Teacher & Autumn Theme)
   const [financialData, setFinancialData] = useState({
-    income: 3500000, // May's budget limit (monthly salary)
+    incomes: [
+      { id: 1, description: 'Sueldo Docencia Colegio', amount: 3500000, category: 'Sueldo', date: '2026-08-05' }
+    ],
     expenses: [
       { id: 1, description: 'Arriendo Apartamento', amount: 1000000, category: 'Vivienda', date: '2026-08-01' },
       { id: 2, description: 'Materiales Escolares (Colores, Marcadores, Copias)', amount: 180000, category: 'Otros', date: '2026-08-03' },
@@ -99,6 +101,81 @@ export default function App() {
       "¡Felicidades, mi amor! Tu esfuerzo siempre da frutos. Te amo. ❤️"
     ];
     return list[Math.floor(Math.random() * list.length)];
+  };
+
+  // Handlers for Incomes
+  const handleAddIncome = (newIncome) => {
+    const incomeWithId = {
+      ...newIncome,
+      id: Date.now()
+    };
+    
+    const transaction = {
+      id: Date.now() + 1,
+      description: newIncome.description,
+      amount: newIncome.amount,
+      category: newIncome.category,
+      type: 'income',
+      date: newIncome.date
+    };
+
+    setFinancialData((prev) => {
+      const updatedIncomes = [incomeWithId, ...prev.incomes];
+      
+      triggerToastAlert(getIncomeMessage(), 'income');
+
+      return {
+        ...prev,
+        incomes: updatedIncomes,
+        transactions: [transaction, ...prev.transactions]
+      };
+    });
+  };
+
+  const handleDeleteIncome = (id) => {
+    setFinancialData((prev) => {
+      const incomeToDelete = prev.incomes.find(inc => inc.id === id);
+      const filteredIncomes = prev.incomes.filter((inc) => inc.id !== id);
+      
+      const filteredTransactions = prev.transactions.filter(
+        (t) => !(t.description === incomeToDelete?.description && t.amount === incomeToDelete?.amount)
+      );
+
+      return {
+        ...prev,
+        incomes: filteredIncomes,
+        transactions: filteredTransactions
+      };
+    });
+  };
+
+  const handleDeleteTransaction = (id) => {
+    setFinancialData((prev) => {
+      const tx = prev.transactions.find(t => t.id === id);
+      if (!tx) return prev;
+
+      const filteredTransactions = prev.transactions.filter(t => t.id !== id);
+      
+      let updatedExpenses = prev.expenses;
+      let updatedIncomes = prev.incomes;
+
+      if (tx.type === 'expense') {
+        updatedExpenses = prev.expenses.filter(
+          exp => !(exp.description === tx.description && exp.amount === tx.amount)
+        );
+      } else if (tx.type === 'income') {
+        updatedIncomes = prev.incomes.filter(
+          inc => !(inc.description === tx.description && inc.amount === tx.amount)
+        );
+      }
+
+      return {
+        ...prev,
+        transactions: filteredTransactions,
+        expenses: updatedExpenses,
+        incomes: updatedIncomes
+      };
+    });
   };
 
   // Handlers for Expenses
@@ -290,9 +367,17 @@ export default function App() {
         // Trigger income alert
         triggerToastAlert(getIncomeMessage(), 'income');
 
+        const newIncome = {
+          id: newId + 2,
+          description: mock.desc,
+          amount: mock.amount,
+          category: mock.category,
+          date: newTransaction.date
+        };
+
         return {
           ...prev,
-          income: prev.income + mock.amount,
+          incomes: [newIncome, ...prev.incomes],
           transactions: updatedTransactions
         };
       }
@@ -313,6 +398,12 @@ export default function App() {
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
+  };
+
+  const totalIncome = (financialData.incomes || []).reduce((sum, inc) => sum + inc.amount, 0);
+  const financialDataWithTotals = {
+    ...financialData,
+    income: totalIncome
   };
 
   return (
@@ -341,9 +432,10 @@ export default function App() {
       <main className="main-content">
         {activeTab === 'dashboard' && (
           <Dashboard 
-            financialData={financialData} 
+            financialData={financialDataWithTotals} 
             simulateBankSync={handleSimulateBankSync}
             exportData={handleExportData}
+            onDeleteTransaction={handleDeleteTransaction}
           />
         )}
         
@@ -352,6 +444,9 @@ export default function App() {
             expenses={financialData.expenses}
             onAddExpense={handleAddExpense}
             onDeleteExpense={handleDeleteExpense}
+            incomes={financialData.incomes}
+            onAddIncome={handleAddIncome}
+            onDeleteIncome={handleDeleteIncome}
             obligations={financialData.obligations}
             onToggleObligation={handleToggleObligation}
             onAddObligation={handleAddObligation}
