@@ -19,7 +19,23 @@ export default function App() {
     "¡Hola, mi vida! Espero que tu jornada escolar sea maravillosa. P.D: No olvides que eres la profesora más linda del mundo entero. 😍✨",
     "¡Buenas nuevas, mi amor! Entrando al diario de la profe consentida. Hoy vas a tener un día increíble. ¡Te amo muchísimo! 💕🏫",
     "¡Hola, hermosa! Que hoy tus estudiantes se porten de maravilla y que tu corazón se llene de alegría. Te mando un abrazo gigante. 👩‍🏫❤️",
-    "¡Mi amor! Recuerda tomarte una pausa para respirar y sonreír. Eres la docente más brillante y la novia más dulce. 🥰✨"
+    "¡Mi amor! Recuerda tomarte una pausa para respirar y sonreír. Eres la docente más brillante y la novia más dulce. 🥰✨",
+    "¡Hola, mi profe favorita! Si el día se pone difícil, recuerda que tu inge te espera con los brazos abiertos y muchos besitos. 🍁💋",
+    "¡Hola, mi cielo! Hoy tienes cara de que vas a cambiar el mundo de un estudiante... y de que estás más hermosa que nunca. 😍📚",
+    "¡Entrando al cuaderno de la novia más linda del planeta! Que hoy todo te salga de maravilla, mi reina. Te amo. ❤️🏫",
+    "¡Hola, mi vida! Eres la profe de mi vida, la que me enseña todos los días lo que es el amor de verdad. ¡Que tengas un gran día! 🌸✨",
+    "¡Hola, hermosa! Un cafecito virtual ☕ y todo el amor del mundo de parte de tu inge para empezar el día escolar. 🛠️❤️",
+    "¡Mi profe consentida! Deja que tu luz brille hoy en el salón, y recuerda que en la tarde te lleno de mimos. 😘🌟",
+    "¡Hola, mi reina hermosa! Que hoy la paciencia te sobre y las sonrisas te sobren aún más. ¡Te amo con locura! 💕🏫",
+    "¡Hola, mi amor! Pasaba a desearte un día maravilloso y a recordarte que eres mi persona favorita de todo el universo. 😍💫",
+    "¡Buenos días, preciosa! Que hoy tu pizarra se llene de ideas lindas y tu día de momentos felices. 👩‍🏫🍂",
+    "¡Hola, mi vida! Eres el recreo favorito de mi corazón. ¡Que tengas un día escolar increíble! 🥰🎒",
+    "¡Hola, hermosa! Recuerda que eres una profesional brillante y una novia perfecta. ¡Orgulloso de ti, siempre! 🎓❤️",
+    "¡Hola, mi sol! Que hoy brilles en tu colegio y que nada te quite esa sonrisa tan espectacular. Te amo. 💕✨",
+    "¡Hola, mi amor lindo! Un abracito apretado de tu inge para que empieces con toda la energía. ¡Te adoro! 🥰🍁",
+    "¡Hola, preciosa! Eres la dueña absoluta de mi corazón y de mi presupuesto de amor (que es infinito). 😘💸",
+    "¡Hola, mi vida! ¿Sabías que eres más linda que un fin de semana completo? ¡Ten un día espectacular hoy! 😍🌻",
+    "¡Hola, mi profe hermosa! Hoy vas a ser la inspiración de tus alumnos y la reina de mi corazón, como siempre. ❤️🏫"
   ];
 
   const mimoNotes = [
@@ -33,7 +49,23 @@ export default function App() {
     "P.D: Te amo más de lo que los programadores aman el café, y mira que eso es muchísimo... ☕❤️",
     "No te olvides de comprarle alguito a tu inge hermoso con tus ahorros... o mejor, ¡vamos juntos y yo te invito todo! 😉✨",
     "Eres el código más perfecto que el universo ha escrito. Te amo con locura. 💻❤️",
-    "Un recordatorio rápido: eres increíble, eres capaz de todo y tu inge te adora con todo el alma. ¡Que tengas un día grandioso! 🌟"
+    "Un recordatorio rápido: eres increíble, eres capaz de todo y tu inge te adora con todo el alma. ¡Que tengas un día grandioso! 🌟",
+    "Vale por: Una tarde entera de masajes y arrurrucos sin interrupciones. ¡Te lo has ganado por ser tan juiciosa! 🥰🛌",
+    "Si la escuela de la vida tuviera calificaciones, tú tendrías un 10 definitivo en belleza, inteligencia y ternura. 😍💯",
+    "Me encantas en todas tus variables y funciones, mi profe hermosa. Eres mi constante favorita en la vida. 🛠️📊",
+    "Cuando te veo sonreír, siento que todos mis problemas de ingeniería se resuelven solos. Eres pura magia. ✨❤️",
+    "Gracias por apoyarme, por comprenderme y por estar siempre a mi lado. Eres la mejor compañera de vida que pude desear. 💕",
+    "Hoy te amo más que ayer, pero menos que mañana. Y mira que ayer te amaba a niveles incalculables... 😉💖",
+    "Un vale por: Un helado gigante y una caminata de la mano hablando de cualquier tontería que nos haga reír. 🍦🍁",
+    "Eres el sol que calienta mis días de otoño. Gracias por ser tan dulce y cariñosa conmigo, mi reina. 🍂🌻",
+    "Te amo en mayúsculas, en minúsculas, en cursiva y en negrita. En todos los formatos posibles, mi amor. 😍📝",
+    "Paso por aquí para recordarte que me encantas demasiado. Eres preciosa, por dentro y por fuera. ¡Nunca lo olvides! 😘🌸",
+    "Si necesitas un escape de calificar tareas, escríbeme: tu inge siempre está disponible para robarte una sonrisa. 💻📞",
+    "Ahorrar es genial, pero gastar tiempo a tu lado es la mejor inversión de mi vida. Te amo con locura. ❤️📈",
+    "Eres la melodía más bonita en mi día a día. Gracias por existir y por ser mi novia hermosa. 💕🎶",
+    "Un besito volador directo a tu mejilla para recordarte que te amo y que estoy contando las horas para verte. 😘⏰",
+    "Eres mi prioridad número uno, hoy y todos los días de mi vida. Gracias por llenar mi mundo de colores cálidos. 🍁❤️",
+    "¡Hola, mi reina! Tu inge te manda un abrazo de oso de esos que recargan la batería al 100%. ¡A comerse el mundo hoy! 🐻💪"
   ];
 
   useEffect(() => {
