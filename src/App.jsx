@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import ExpensesTracker from './components/ExpensesTracker';
@@ -15,37 +15,53 @@ export default function App() {
     type: 'info' // 'income' or 'expense'
   });
 
+  const localStorageKey = 'finances_may_data';
+
   // Initial State tailored for May (Teacher & Autumn Theme)
-  const [financialData, setFinancialData] = useState({
-    incomes: [
-      { id: 1, description: 'Sueldo Docencia Colegio', amount: 3500000, category: 'Sueldo', date: '2026-08-05' }
-    ],
-    expenses: [
-      { id: 1, description: 'Arriendo Apartamento', amount: 1000000, category: 'Vivienda', date: '2026-08-01' },
-      { id: 2, description: 'Materiales Escolares (Colores, Marcadores, Copias)', amount: 180000, category: 'Otros', date: '2026-08-03' },
-      { id: 3, description: 'Salida a Cenar con mi Inge Lindo', amount: 150000, category: 'Entretenimiento', date: '2026-08-04' },
-      { id: 4, description: 'Servicios Públicos (Luz/Internet)', amount: 280000, category: 'Servicios', date: '2026-08-05' },
-      { id: 5, description: 'Suscripción Canva Pro (para clases)', amount: 39000, category: 'Otros', date: '2026-08-06' },
-      { id: 6, description: 'Plan de Celular Claro', amount: 75000, category: 'Servicios', date: '2026-08-07' }
-    ],
-    investments: [
-      { id: 1, name: 'CDT Bancolombia Profe', type: 'Renta Fija', shares: 1, averageCost: 5000000, currentPrice: 5250000 },
-      { id: 2, name: 'Ahorro Vacaciones Inge & May', type: 'Renta Fija', shares: 1, averageCost: 3000000, currentPrice: 3120000 }
-    ],
-    transactions: [
-      { id: 1, description: 'Plan de Celular Claro', amount: 75000, category: 'Servicios', type: 'expense', date: '2026-08-07' },
-      { id: 2, description: 'Suscripción Canva Pro (para clases)', amount: 39000, category: 'Otros', type: 'expense', date: '2026-08-06' },
-      { id: 3, description: 'Sueldo Docencia Colegio', amount: 3500000, category: 'Sueldo', type: 'income', date: '2026-08-05' },
-      { id: 4, description: 'Servicios Públicos (Luz/Internet)', amount: 280000, category: 'Servicios', type: 'expense', date: '2026-08-05' },
-      { id: 5, description: 'Salida a Cenar con mi Inge Lindo', amount: 150000, category: 'Entretenimiento', type: 'expense', date: '2026-08-04' }
-    ],
-    obligations: [
-      { id: 1, description: 'Arriendo Apartamento', amount: 1000000, category: 'Vivienda', type: 'Gasto Fijo', dueDate: 'Día 05', paid: true },
-      { id: 2, description: 'Plan de Celular Claro', amount: 75000, category: 'Servicios', type: 'Gasto Fijo', dueDate: 'Día 07', paid: true },
-      { id: 3, description: 'Cuota Crédito Educativo ICETEX', amount: 250000, category: 'Créditos', type: 'Crédito Educativo', dueDate: 'Día 15', paid: false },
-      { id: 4, description: 'Servicios Públicos (Luz/Internet)', amount: 280000, category: 'Servicios', type: 'Gasto Fijo', dueDate: 'Día 20', paid: false }
-    ]
+  const [financialData, setFinancialData] = useState(() => {
+    const saved = localStorage.getItem(localStorageKey);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error("Failed to parse saved financial data", e);
+      }
+    }
+    return {
+      incomes: [
+        { id: 1, description: 'Sueldo Docencia Colegio', amount: 3500000, category: 'Sueldo', date: '2026-08-05' }
+      ],
+      expenses: [
+        { id: 1, description: 'Arriendo Apartamento', amount: 1000000, category: 'Vivienda', date: '2026-08-01' },
+        { id: 2, description: 'Materiales Escolares (Colores, Marcadores, Copias)', amount: 180000, category: 'Otros', date: '2026-08-03' },
+        { id: 3, description: 'Salida a Cenar con mi Inge Lindo', amount: 150000, category: 'Entretenimiento', date: '2026-08-04' },
+        { id: 4, description: 'Servicios Públicos (Luz/Internet)', amount: 280000, category: 'Servicios', date: '2026-08-05' },
+        { id: 5, description: 'Suscripción Canva Pro (para clases)', amount: 39000, category: 'Otros', date: '2026-08-06' },
+        { id: 6, description: 'Plan de Celular Claro', amount: 75000, category: 'Servicios', date: '2026-08-07' }
+      ],
+      investments: [
+        { id: 1, name: 'CDT Bancolombia Profe', type: 'Renta Fija', shares: 1, averageCost: 5000000, currentPrice: 5250000 },
+        { id: 2, name: 'Ahorro Vacaciones Inge & May', type: 'Renta Fija', shares: 1, averageCost: 3000000, currentPrice: 3120000 }
+      ],
+      transactions: [
+        { id: 1, description: 'Plan de Celular Claro', amount: 75000, category: 'Servicios', type: 'expense', date: '2026-08-07' },
+        { id: 2, description: 'Suscripción Canva Pro (para clases)', amount: 39000, category: 'Otros', type: 'expense', date: '2026-08-06' },
+        { id: 3, description: 'Sueldo Docencia Colegio', amount: 3500000, category: 'Sueldo', type: 'income', date: '2026-08-05' },
+        { id: 4, description: 'Servicios Públicos (Luz/Internet)', amount: 280000, category: 'Servicios', type: 'expense', date: '2026-08-05' },
+        { id: 5, description: 'Salida a Cenar con mi Inge Lindo', amount: 150000, category: 'Entretenimiento', type: 'expense', date: '2026-08-04' }
+      ],
+      obligations: [
+        { id: 1, description: 'Arriendo Apartamento', amount: 1000000, category: 'Vivienda', type: 'Gasto Fijo', dueDate: 'Día 05', paid: true },
+        { id: 2, description: 'Plan de Celular Claro', amount: 75000, category: 'Servicios', type: 'Gasto Fijo', dueDate: 'Día 07', paid: true },
+        { id: 3, description: 'Cuota Crédito Educativo ICETEX', amount: 250000, category: 'Créditos', type: 'Crédito Educativo', dueDate: 'Día 15', paid: false },
+        { id: 4, description: 'Servicios Públicos (Luz/Internet)', amount: 280000, category: 'Servicios', type: 'Gasto Fijo', dueDate: 'Día 20', paid: false }
+      ]
+    };
   });
+
+  useEffect(() => {
+    localStorage.setItem(localStorageKey, JSON.stringify(financialData));
+  }, [financialData]);
 
   // Trigger global toast alert helper
   const triggerToastAlert = (message, type) => {
@@ -396,6 +412,19 @@ export default function App() {
     downloadAnchor.remove();
   };
 
+  const handleClearData = () => {
+    if (window.confirm("¿Estás seguro de que quieres borrar todos los datos de demostración para iniciar en limpio con tus valores reales? Esto vaciará tus registros e inversiones actuales.")) {
+      setFinancialData({
+        incomes: [],
+        expenses: [],
+        investments: [],
+        transactions: [],
+        obligations: []
+      });
+      triggerToastAlert("Boletín escolar restablecido. ¡Listo para tus datos reales! 👩‍🏫✨", "info");
+    }
+  };
+
   const totalIncome = (financialData.incomes || []).reduce((sum, inc) => sum + inc.amount, 0);
   const financialDataWithTotals = {
     ...financialData,
@@ -432,6 +461,7 @@ export default function App() {
             simulateBankSync={handleSimulateBankSync}
             exportData={handleExportData}
             onDeleteTransaction={handleDeleteTransaction}
+            clearData={handleClearData}
           />
         )}
         
