@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import ExpensesTracker from './components/ExpensesTracker';
@@ -7,6 +7,7 @@ import SavingsGoals from './components/SavingsGoals';
 import { Heart } from 'lucide-react';
 
 export default function App() {
+  const hasLoadedFromCloud = useRef(false);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showWelcomeModal, setShowWelcomeModal] = useState(true);
   const [welcomeGreeting, setWelcomeGreeting] = useState('');
@@ -109,6 +110,8 @@ export default function App() {
         console.warn("Could not load from Vercel KV cloud", e);
         setSyncError(e.message);
         setSyncStatus('error');
+      } finally {
+        hasLoadedFromCloud.current = true;
       }
     };
     loadFromCloud();
@@ -225,6 +228,11 @@ export default function App() {
 
   useEffect(() => {
     localStorage.setItem(localStorageKey, JSON.stringify(financialData));
+
+    // Only save to cloud if we have already finished the initial load attempt!
+    if (!hasLoadedFromCloud.current) {
+      return;
+    }
 
     // Asynchronously push updates to Vercel KV database
     const saveToCloud = async () => {
