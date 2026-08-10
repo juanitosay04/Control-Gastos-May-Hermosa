@@ -3,6 +3,7 @@ import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import ExpensesTracker from './components/ExpensesTracker';
 import InvestmentsTracker from './components/InvestmentsTracker';
+import SavingsGoals from './components/SavingsGoals';
 import { Heart } from 'lucide-react';
 
 export default function App() {
@@ -177,6 +178,10 @@ export default function App() {
         { id: 3, description: 'Cuota Crédito Educativo ICETEX', amount: 250000, category: 'Créditos', type: 'Crédito Educativo', dueDate: 'Día 15', paid: false },
         { id: 4, description: 'Servicios Públicos (Luz/Internet)', amount: 280000, category: 'Servicios', type: 'Gasto Fijo', dueDate: 'Día 20', paid: false }
       ],
+      savingsGoals: [
+        { id: 1, name: 'Viaje de Aniversario', targetAmount: 5000000, currentAmount: 1500000, targetDate: '2026-12-31' },
+        { id: 2, name: 'Comprar Computador Portátil', targetAmount: 3000000, currentAmount: 1800000, targetDate: '2026-10-15' }
+      ],
       config: {
         monthlyBudget: 3500000,
         cycleStartDay: 1
@@ -192,6 +197,10 @@ export default function App() {
         monthlyBudget: 3500000,
         cycleStartDay: 1
       };
+    }
+    // Migrate old data missing savingsGoals field
+    if (!parsedData.savingsGoals) {
+      parsedData.savingsGoals = defaultData.savingsGoals;
     }
     return parsedData;
   });
@@ -440,6 +449,48 @@ export default function App() {
     setFinancialData((prev) => ({
       ...prev,
       investments: prev.investments.filter((inv) => inv.id !== id)
+    }));
+  };
+
+  // Handlers for Savings Goals (Bolsillos)
+  const handleAddSavingsGoal = (newGoal) => {
+    setFinancialData((prev) => ({
+      ...prev,
+      savingsGoals: [
+        { ...newGoal, id: Date.now() },
+        ...(prev.savingsGoals || [])
+      ]
+    }));
+  };
+
+  const handleDeleteSavingsGoal = (id) => {
+    setFinancialData((prev) => ({
+      ...prev,
+      savingsGoals: (prev.savingsGoals || []).filter(g => g.id !== id)
+    }));
+  };
+
+  const handleDepositToSavingsGoal = (id, amount) => {
+    setFinancialData((prev) => ({
+      ...prev,
+      savingsGoals: (prev.savingsGoals || []).map(g => {
+        if (g.id === id) {
+          return { ...g, currentAmount: g.currentAmount + amount };
+        }
+        return g;
+      })
+    }));
+  };
+
+  const handleWithdrawFromSavingsGoal = (id, amount) => {
+    setFinancialData((prev) => ({
+      ...prev,
+      savingsGoals: (prev.savingsGoals || []).map(g => {
+        if (g.id === id) {
+          return { ...g, currentAmount: Math.max(0, g.currentAmount - amount) };
+        }
+        return g;
+      })
     }));
   };
 
@@ -767,6 +818,16 @@ export default function App() {
             onAddObligation={handleAddObligation}
             onDeleteObligation={handleDeleteObligation}
             config={config}
+          />
+        )}
+
+        {activeTab === 'goals' && (
+          <SavingsGoals 
+            savingsGoals={financialData.savingsGoals || []}
+            onAddSavingsGoal={handleAddSavingsGoal}
+            onDeleteSavingsGoal={handleDeleteSavingsGoal}
+            onDepositToSavingsGoal={handleDepositToSavingsGoal}
+            onWithdrawFromSavingsGoal={handleWithdrawFromSavingsGoal}
           />
         )}
 
