@@ -258,28 +258,37 @@ export default function App() {
       const list = [
         "¡Empezamos el mes tranquilas, hermosa! 🍂",
         "Un gustico no le hace daño a nadie. ✨",
-        "Todo bajo control, mi profe favorita. 👩‍🏫"
+        "Todo bajo control, mi profe favorita. 👩‍🏫",
+        "¡Me parece muy bien consentirse! Para eso se trabaja duro, mi vida. 💕",
+        "Menos de un millón, vamos volando como avioncito de papel. ✈️",
+        "Un gasto chiquito, como un mimo en el alma. ❤️"
       ];
       return list[Math.floor(Math.random() * list.length)];
     } else if (newTotal >= 1000000 && newTotal < 2000000) {
       const list = [
         "Upa, más gastos... pero te lo mereces, preciosa. 😘",
         "¡Cuidado con la billetera! Pero bueno, la vida es una sola. 🍁",
-        "La economía está temblando un poquito, mi amor. 💸"
+        "La economía está temblando un poquito, mi amor. 💸",
+        "Ayayay, ¡que no se nos vaya la mano con los marcadores de colores! 🎨",
+        "Un gustito de los buenos. ¡Te amo, mi compradora estrella! 🛍️"
       ];
       return list[Math.floor(Math.random() * list.length)];
     } else if (newTotal >= 2000000 && newTotal < 3000000) {
       const list = [
         "¡Epa! Ese carrito de compras va lleno. ¿Todo es para el colegio? 🏫",
         "Alguien está gastando como si el inge fuera millonario... mentiras, mi amor, ¡disfruta! 😂",
-        "¡Alerta naranja! El presupuesto escolar está bajando. ⚠️"
+        "¡Alerta naranja! El presupuesto escolar está bajando. ⚠️",
+        "Mi amor, las tizas se están gastando rápido. ¿Hacemos junta presupuestal? ☕",
+        "¡Ojo al charco! Pasamos los dos millones. ¡A respirar hondo! 🧘‍♀️"
       ];
       return list[Math.floor(Math.random() * list.length)];
     } else {
       const list = [
         "¡DIOS MÍO, PARTE EL LÁPIZ! 🛑 ¡Llegamos a zona de tarjeta roja de gastos!",
         "Mi amor... ¿compraste un salón de clases entero o qué pasó aquí? 😱",
-        "¡Emergencia financiera! Reportarse con el inge para un rescate económico inmediato. 🚨❤️"
+        "¡Emergencia financiera! Reportarse con el inge para un rescate económico inmediato. 🚨❤️",
+        "¡Auxilio! El boletín de notas está en números rojos. ¡Un abrazo de contención! 🫂",
+        "¡Mi amor, nos excedimos! Pero no te preocupes, el inge te consiente y te respalda siempre. 💕"
       ];
       return list[Math.floor(Math.random() * list.length)];
     }
@@ -293,7 +302,9 @@ export default function App() {
       "¡Llegó el pago de las clases! A consentir a la mejor profesora del mundo. 👩‍🏫🍎",
       "Entrada registrada. ¡Qué novia tan trabajadora e inteligente tengo! 😍",
       "¡Platica para el próximo viaje juntos! Qué felicidad, mi vida. ✈️🍂",
-      "¡Felicidades, mi amor! Tu esfuerzo siempre da frutos. Te amo. ❤️"
+      "¡Felicidades, mi amor! Tu esfuerzo siempre da frutos. Te amo. ❤️",
+      "¡Eso, mi profe preciosa! Dinero bien ganado en las aulas. ¡A celebrar! 🎉",
+      "¡Lluvia de billetes! Te mereces todo el éxito del universo, hermosa. 🌟"
     ];
     return list[Math.floor(Math.random() * list.length)];
   };
