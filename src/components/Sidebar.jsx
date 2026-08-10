@@ -1,5 +1,4 @@
-import React from 'react';
-import { BookOpen, CalendarCheck, GraduationCap, LineChart, Heart } from 'lucide-react';
+import { BookOpen, CalendarCheck, GraduationCap, LineChart, Heart, History, Settings } from 'lucide-react';
 
 export default function Sidebar({ activeTab, setActiveTab }) {
   const menuItems = [
@@ -7,6 +6,8 @@ export default function Sidebar({ activeTab, setActiveTab }) {
     { id: 'expenses', name: 'Control Asistencia', icon: CalendarCheck },
     { id: 'projections', name: 'Plan de Estudios', icon: LineChart },
     { id: 'investments', name: 'Aula de Ahorro', icon: GraduationCap },
+    { id: 'history', name: 'Historial Cierres', icon: History },
+    { id: 'config', name: 'Configuración', icon: Settings },
   ];
 
   return (
