@@ -95,22 +95,6 @@ export default function Dashboard({
           </div>
           <p>Control del mes de mi hermosa profe. ¡Monitorea tus ingresos, gastos y metas! 🍂👩‍🏫</p>
         </div>
-        <div className="header-actions">
-          <button className="btn btn-secondary" onClick={simulateBankSync} style={{ width: 'auto' }}>
-            <RefreshCw size={16} />
-            <span>Simular Turno de Clases</span>
-          </button>
-          <button className="btn btn-primary" onClick={exportData} style={{ width: 'auto' }}>
-            <Download size={16} />
-            <span>Descargar Boletín (JSON)</span>
-          </button>
-          {clearData && (
-            <button className="btn btn-danger" onClick={clearData} style={{ width: 'auto', background: 'var(--accent-rose)', color: '#120904' }}>
-              <Trash2 size={16} />
-              <span>Limpiar Demostración</span>
-            </button>
-          )}
-        </div>
       </div>
 
       {/* Metrics Cards */}
