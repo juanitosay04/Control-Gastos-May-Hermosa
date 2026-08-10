@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, ArrowUpRight, ArrowDownRight, TrendingUp, DollarSign } from 'lucide-react';
+import { Plus, Trash2, TrendingUp, DollarSign } from 'lucide-react';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
 export default function InvestmentsTracker({ investments, onAddInvestment, onDeleteInvestment }) {
   const [name, setName] = useState('');
-  const [assetType, setAssetType] = useState('Renta Fija');
-  const [shares, setShares] = useState('');
-  const [avgCost, setAvgCost] = useState('');
-  const [currentPrice, setCurrentPrice] = useState('');
+  const [assetType, setAssetType] = useState('Efectivo');
+  const [amount, setAmount] = useState('');
 
   // Calculations
-  const portfolioTotalCost = investments.reduce((sum, inv) => sum + (inv.shares * inv.averageCost), 0);
   const portfolioCurrentValue = investments.reduce((sum, inv) => sum + (inv.shares * inv.currentPrice), 0);
-  const totalReturn = portfolioCurrentValue - portfolioTotalCost;
-  const returnPercentage = portfolioTotalCost > 0 ? ((totalReturn / portfolioTotalCost) * 100).toFixed(2) : 0;
 
   // Group by Asset Type for Chart
   const typeDataMap = investments.reduce((acc, inv) => {
@@ -23,11 +18,11 @@ export default function InvestmentsTracker({ investments, onAddInvestment, onDel
   }, {});
 
   const typeColors = {
-    'Renta Fija': '#e07a5f',
-    'Criptomonedas': '#e76f51',
-    'Acciones': '#f4a261',
-    'Bienes Raíces': '#81b29a',
-    'ETFs': '#9d4edd',
+    'Efectivo': '#e07a5f',
+    'Cuenta Bancaria': '#e76f51',
+    'CDT': '#f4a261',
+    'Regalos': '#81b29a',
+    'Inversiones': '#9d4edd',
     'Otros': '#8e7365'
   };
 
@@ -54,21 +49,23 @@ export default function InvestmentsTracker({ investments, onAddInvestment, onDel
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name || !shares || !avgCost || !currentPrice) return;
+    if (!name || !amount) return;
 
+    const parsedAmount = parseFloat(amount.toString().replace(/\./g, '')) || 0;
+
+    // We store shares: 1, averageCost: parsedAmount, currentPrice: parsedAmount
+    // to maintain full backward compatibility with the database schema
     onAddInvestment({
       name,
       type: assetType,
-      shares: parseFloat(shares),
-      averageCost: parseFloat(avgCost.toString().replace(/\./g, '')) || 0,
-      currentPrice: parseFloat(currentPrice.toString().replace(/\./g, '')) || 0
+      shares: 1,
+      averageCost: parsedAmount,
+      currentPrice: parsedAmount
     });
 
     // Reset Form
     setName('');
-    setShares('');
-    setAvgCost('');
-    setCurrentPrice('');
+    setAmount('');
   };
 
   return (
@@ -76,54 +73,23 @@ export default function InvestmentsTracker({ investments, onAddInvestment, onDel
       {/* Header */}
       <div className="top-header">
         <div className="header-title-area">
-          <h1>Aula de Ahorro (Inversiones)</h1>
-          <p>Controla tus ahorros a largo plazo, CDT y activos. ¡Crece financieramente, preciosa! 🍂✨</p>
+          <h1>Aula de Ahorro (Activos & Reservas)</h1>
+          <p>Controla tus ahorros en efectivo, alcancías, cuentas y otros activos. 🍂✨</p>
         </div>
       </div>
 
       {/* Portfolio Metrics Card */}
-      <div className="grid-cols-3" style={{ marginBottom: '2rem' }}>
-        <div className="glass-card metric-card cyan">
+      <div style={{ marginBottom: '2rem' }}>
+        <div className="glass-card metric-card cyan" style={{ maxWidth: '400px' }}>
           <div className="metric-header">
-            <span className="metric-title">Ahorro Total en el Aula</span>
+            <span className="metric-title">Total Ahorrado / Reservas</span>
             <div className="metric-icon-wrapper">
               <TrendingUp size={20} className="text-cyan" />
             </div>
           </div>
           <div className="metric-value">{formatCurrency(portfolioCurrentValue)}</div>
           <div className="metric-footer">
-            <span>Capital invertido: </span>
-            <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{formatCurrency(portfolioTotalCost)}</span>
-          </div>
-        </div>
-
-        <div className="glass-card metric-card emerald">
-          <div className="metric-header">
-            <span className="metric-title">Rendimiento del Aula ($)</span>
-            <div className="metric-icon-wrapper">
-              <DollarSign size={20} className="text-emerald" />
-            </div>
-          </div>
-          <div className="metric-value" style={{ color: totalReturn >= 0 ? 'var(--accent-emerald)' : 'var(--accent-rose)' }}>
-            {totalReturn >= 0 ? '+' : ''}{formatCurrency(totalReturn)}
-          </div>
-          <div className="metric-footer">
-            <span>Intereses ganados totales</span>
-          </div>
-        </div>
-
-        <div className="glass-card metric-card gold">
-          <div className="metric-header">
-            <span className="metric-title">Rendimiento Escolar (%)</span>
-            <div className="metric-icon-wrapper">
-              <ArrowUpRight size={20} className="text-gold" />
-            </div>
-          </div>
-          <div className="metric-value" style={{ color: totalReturn >= 0 ? 'var(--accent-emerald)' : 'var(--accent-rose)' }}>
-            {totalReturn >= 0 ? '+' : ''}{returnPercentage}%
-          </div>
-          <div className="metric-footer">
-            <span>Retorno de tus aportes</span>
+            <span>Suma de todas tus alcancías y cuentas</span>
           </div>
         </div>
       </div>
@@ -132,88 +98,59 @@ export default function InvestmentsTracker({ investments, onAddInvestment, onDel
       <div className="grid-cols-2">
         {/* Registry Form */}
         <div className="glass-card">
-          <h2>Añadir Nuevo Activo (Aula)</h2>
+          <h2>Añadir Nuevo Ahorro / Activo</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>Nombre del Activo</label>
+              <label>Concepto de Ahorro</label>
               <input 
                 type="text" 
                 value={name} 
                 onChange={(e) => setName(e.target.value)} 
-                placeholder="Ej. CDT Bancolombia, Fondo Colectivo..." 
+                placeholder="Ej. Alcancía de Monedas, Cuenta Bancolombia, Regalo..." 
                 required 
               />
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label>Tipo de Ahorro</label>
-                <select value={assetType} onChange={(e) => setAssetType(e.target.value)}>
-                  <option value="Renta Fija">Renta Fija (CDT)</option>
-                  <option value="Acciones">Acciones</option>
-                  <option value="Criptomonedas">Criptomonedas</option>
-                  <option value="Bienes Raíces">Bienes Raíces</option>
-                  <option value="ETFs">ETFs</option>
-                  <option value="Otros">Otros</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label>Unidades / Acciones</label>
-                <input 
-                  type="number" 
-                  value={shares} 
-                  onChange={(e) => setShares(e.target.value)} 
-                  placeholder="Ej. 1" 
-                  min="0"
-                  step="any"
-                  required 
-                />
-              </div>
+            <div className="form-group">
+              <label>Tipo de Ahorro</label>
+              <select value={assetType} onChange={(e) => setAssetType(e.target.value)}>
+                <option value="Efectivo">Efectivo / Alcancía</option>
+                <option value="Cuenta Bancaria">Cuenta de Ahorros</option>
+                <option value="CDT">CDT / Depósitos</option>
+                <option value="Regalos">Regalos</option>
+                <option value="Inversiones">Inversiones</option>
+                <option value="Otros">Otros</option>
+              </select>
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label>Costo Unitario ($ COP)</label>
-                <input 
-                  type="text" 
-                  inputMode="numeric"
-                  value={avgCost} 
-                  onChange={(e) => handleFormatInput(e.target.value, setAvgCost)} 
-                  placeholder="Monto Ahorrado" 
-                  required 
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Precio Actual ($ COP)</label>
-                <input 
-                  type="text" 
-                  inputMode="numeric"
-                  value={currentPrice} 
-                  onChange={(e) => handleFormatInput(e.target.value, setCurrentPrice)} 
-                  placeholder="Valoración en el Mercado" 
-                  required 
-                />
-              </div>
+            <div className="form-group">
+              <label>Valor / Saldo ($ COP)</label>
+              <input 
+                type="text" 
+                inputMode="numeric"
+                value={amount} 
+                onChange={(e) => handleFormatInput(e.target.value, setAmount)} 
+                placeholder="Ej. 500.000" 
+                required 
+              />
             </div>
 
             <button type="submit" className="btn btn-primary">
               <Plus size={18} />
-              <span>Guardar Activo en el Aula</span>
+              <span>Guardar en el Aula</span>
             </button>
           </form>
         </div>
 
         {/* Allocation Chart Card */}
         <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-          <h2>Distribución del Aula</h2>
+          <h2>Distribución de Ahorros</h2>
           {chartData.length === 0 ? (
-            <div style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '300px' }}>
-              <p style={{ color: 'var(--text-muted)' }}>Agrega activos para ver tu distribución escolar. 🍁</p>
+            <div style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '250px' }}>
+              <p style={{ color: 'var(--text-muted)' }}>Agrega registros para ver tu distribución de ahorros. 🍁</p>
             </div>
           ) : (
-            <div style={{ width: '100%', height: 320 }}>
+            <div style={{ width: '100%', height: 260 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -245,30 +182,21 @@ export default function InvestmentsTracker({ investments, onAddInvestment, onDel
       <div className="glass-card" style={{ marginTop: '2rem' }}>
         <h2>Lista de Ahorros e Inversiones</h2>
         {investments.length === 0 ? (
-          <p style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>No hay activos en el aula actualmente.</p>
+          <p style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>No hay ahorros registrados en el aula.</p>
         ) : (
           <div className="table-container">
             <table>
               <thead>
                 <tr>
-                  <th>Activo</th>
+                  <th>Concepto / Ahorro</th>
                   <th>Tipo</th>
-                  <th style={{ textAlign: 'right' }}>Unidades</th>
-                  <th style={{ textAlign: 'right' }}>Costo Unit.</th>
-                  <th style={{ textAlign: 'right' }}>Precio Act.</th>
-                  <th style={{ textAlign: 'right' }}>Valor Total</th>
-                  <th style={{ textAlign: 'right' }}>Diferencia ($)</th>
-                  <th style={{ textAlign: 'right' }}>Rendimiento (%)</th>
+                  <th style={{ textAlign: 'right' }}>Valor Total / Saldo</th>
                   <th style={{ textAlign: 'center', width: '80px' }}>Acción</th>
                 </tr>
               </thead>
               <tbody>
                 {investments.map((inv) => {
-                  const cost = inv.shares * inv.averageCost;
                   const val = inv.shares * inv.currentPrice;
-                  const ret = val - cost;
-                  const retPct = cost > 0 ? ((ret / cost) * 100).toFixed(2) : 0;
-                  const isPositive = ret >= 0;
 
                   return (
                     <tr key={inv.id}>
@@ -277,35 +205,14 @@ export default function InvestmentsTracker({ investments, onAddInvestment, onDel
                         <span 
                           className="badge" 
                           style={{ 
-                            backgroundColor: `${typeColors[inv.type]}15`, 
-                            color: typeColors[inv.type] 
+                            backgroundColor: `${typeColors[inv.type] || '#8e7365'}15`, 
+                            color: typeColors[inv.type] || '#8e7365'
                           }}
                         >
                           {inv.type}
                         </span>
                       </td>
-                      <td style={{ textAlign: 'right' }}>{inv.shares}</td>
-                      <td style={{ textAlign: 'right' }}>{formatCurrency(inv.averageCost)}</td>
-                      <td style={{ textAlign: 'right' }}>{formatCurrency(inv.currentPrice)}</td>
                       <td style={{ textAlign: 'right', fontWeight: 700 }}>{formatCurrency(val)}</td>
-                      <td 
-                        style={{ 
-                          textAlign: 'right', 
-                          fontWeight: 600,
-                          color: isPositive ? 'var(--accent-emerald)' : 'var(--accent-rose)' 
-                        }}
-                      >
-                        {isPositive ? '+' : ''}{formatCurrency(ret)}
-                      </td>
-                      <td 
-                        style={{ 
-                          textAlign: 'right', 
-                          fontWeight: 700,
-                          color: isPositive ? 'var(--accent-emerald)' : 'var(--accent-rose)' 
-                        }}
-                      >
-                        {isPositive ? '+' : ''}{retPct}%
-                      </td>
                       <td style={{ textAlign: 'center' }}>
                         <button 
                           className="btn btn-danger" 

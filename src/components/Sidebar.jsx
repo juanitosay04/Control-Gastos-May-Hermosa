@@ -1,10 +1,9 @@
-import { BookOpen, CalendarCheck, GraduationCap, LineChart, Heart, History, Settings } from 'lucide-react';
+import { BookOpen, CalendarCheck, GraduationCap, Heart, History, Settings } from 'lucide-react';
 
 export default function Sidebar({ activeTab, setActiveTab }) {
   const menuItems = [
     { id: 'dashboard', name: 'Cuaderno de Tareas', icon: BookOpen },
     { id: 'expenses', name: 'Control Asistencia', icon: CalendarCheck },
-    { id: 'projections', name: 'Plan de Estudios', icon: LineChart },
     { id: 'investments', name: 'Aula de Ahorro', icon: GraduationCap },
     { id: 'history', name: 'Historial Cierres', icon: History },
     { id: 'config', name: 'Configuración', icon: Settings },
